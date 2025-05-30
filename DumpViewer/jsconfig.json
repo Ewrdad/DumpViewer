@@ -3,6 +3,24 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
-  }
+    },
+    "target": "es2020", // Or "es6", "esnext", etc., depending on your project's JS version
+    "module": "esnext", // Or "commonjs", "es6", etc.
+    "jsx": "react", // If you're using React JSX
+    "checkJs": true, // This is crucial for JSDoc checks!
+    "allowJs": true, // Allows JS files to be part of the compilation context
+    "noEmit": true, // Don't compile anything, just check types
+    "esModuleInterop": true, // Helps with commonjs/esmodule interop
+    "skipLibCheck": true, // Skips checking declaration files for performance
+    "forceConsistentCasingInFileNames": true // Good practice
+  },
+  "include": [
+    "src/**/*",
+    "src/*", // Tells VS Code to include all files in the 'src' directory (or whatever your main source folder is)
+    "jsconfig.json" // Include itself
+  ],
+  "exclude": [
+    "node_modules", // Always exclude node_modules for performance
+    "**/node_modules/*"
+  ]
 }
