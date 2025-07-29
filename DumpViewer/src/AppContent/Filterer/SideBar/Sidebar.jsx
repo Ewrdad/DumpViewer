@@ -3,14 +3,14 @@ import React from "react";
 import { AccesibilityField } from "./Accesibility/AccesibilityField";
 import { TutorialField } from "./Tutorial/TutorialField";
 import { FileField } from "./File/FileField";
-import { ColumnGeneralField } from "./columnGeneral/ColumnGeneralField";
-import { ColumnVisibilityField } from "./columnVisibility/ColumnVisibilityField";
-import { ColumnExcludeField } from "./columnExclude/ColumnExcludeField";
-import { ColumnHighlightField } from "./columnHighlight/ColumnHighlightField";
-import { GlobalRowField } from "./globalRow/GlobalRowField";
-import { GlobalColumnField } from "./globalColumn/GlobalColumnField";
-import { GlobalExcludeField } from "./globalExclude/GlobalExcludeField";
-import { GlobalHighlightField } from "./globalHighlight/GlobalHighlightField";
+import { ColumnGeneralField } from "./column/columnGeneral/ColumnGeneralField";
+import { ColumnVisibilityField } from "./column/columnVisibility/ColumnVisibilityField";
+import { ColumnExcludeField } from "./column/columnExclude/ColumnExcludeField";
+import { ColumnHighlightField } from "./column/columnHighlight/ColumnHighlightField";
+import { GlobalRowField } from "./global/globalRow/GlobalRowField";
+import { GlobalColumnField } from "./global/globalColumn/GlobalColumnField";
+import { GlobalExcludeField } from "./global/globalExclude/GlobalExcludeField";
+import { GlobalHighlightField } from "./global/globalHighlight/GlobalHighlightField";
 /**
  * @typedef {import('../../FilterType').Filter} Filter
  */
