@@ -1,5 +1,16 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { AccesibilityField } from "./Accesibility/AccesibilityField";
+import { TutorialField } from "./Tutorial/TutorialField";
+import { FileField } from "./File/FileField";
+import { ColumnGeneralField } from "./columnGeneral/ColumnGeneralField";
+import { ColumnVisibilityField } from "./columnVisibility/ColumnVisibilityField";
+import { ColumnExcludeField } from "./columnExclude/ColumnExcludeField";
+import { ColumnHighlightField } from "./columnHighlight/ColumnHighlightField";
+import { GlobalRowField } from "./globalRow/GlobalRowField";
+import { GlobalColumnField } from "./globalColumn/GlobalColumnField";
+import { GlobalExcludeField } from "./globalExclude/GlobalExcludeField";
+import { GlobalHighlightField } from "./globalHighlight/GlobalHighlightField";
 /**
  * @typedef {import('../../FilterType').Filter} Filter
  */
@@ -31,6 +42,7 @@ export const Sidebar = ({ filter, setFilter, whatIsVisible, clearData }) => {
 
   return (
     <div className="fixed top-0 right-0 h-screen w-64 bg-gray-100 p-4 shadow-lg">
+      <h2 className="text-lg font-bold mb-4">Sidebar</h2>
       {whatIsVisible.File && (
         <Button
           onMouseDown={() => clearData()}
@@ -41,6 +53,28 @@ export const Sidebar = ({ filter, setFilter, whatIsVisible, clearData }) => {
           Reset Data
         </Button>
       )}
+      {/* MARK: Accesibility Section */}
+      <AccesibilityField isVisible={whatIsVisible.Accesibility} />
+      {/* MARK: Tutorial Section */}
+      <TutorialField isVisible={whatIsVisible.Tutorial} />
+      {/* MARK: File Section */}
+      <FileField isVisible={whatIsVisible.File} />
+      {/* MARK: Global Row Section */}
+      <GlobalRowField isVisible={whatIsVisible.globalRow} />
+      {/* MARK: Global Column Section */}
+      <GlobalColumnField isVisible={whatIsVisible.globalColumn} />
+      {/* MARK: Global Exclude Section */}
+      <GlobalExcludeField isVisible={whatIsVisible.globalExclude} />
+      {/* MARK: Global Highlight Section */}
+      <GlobalHighlightField isVisible={whatIsVisible.globalHighlight} />
+      {/* MARK: Column General Section */}
+      <ColumnGeneralField isVisible={whatIsVisible.columnGeneral} />
+      {/* MARK: Column Visibility Section */}
+      <ColumnVisibilityField isVisible={whatIsVisible.columnVisibility} />
+      {/* MARK: Column Exclude Section */}
+      <ColumnExcludeField isVisible={whatIsVisible.columnExclude} />
+      {/* MARK: Column Highlight Section */}
+      <ColumnHighlightField isVisible={whatIsVisible.columnHighlight} />
     </div>
   );
 };
