@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { allOptions } from "../Options";
 
 /**
@@ -13,6 +13,17 @@ import { allOptions } from "../Options";
  */
 // @ts-ignore
 export const TopBar = ({ whatIsVisible, setWhatIsVisible }) => {
+  //#region State and Refs
+  const [appGroupValue, setAppGroupValue] = useState([
+    allOptions[0],
+    allOptions[1],
+  ]);
+  const [dataGroupValue, setDataGroupValue] = useState([]);
+  const [columnGroupValue, setColumnGroupValue] = useState([]);
+  const appGroup = useRef();
+  //#endregion
+
+  //#region Options Groups
   const appGroupOptions = [allOptions[0], allOptions[1], allOptions[2]];
   const dataGroupOptions = [
     allOptions[3],
@@ -26,9 +37,10 @@ export const TopBar = ({ whatIsVisible, setWhatIsVisible }) => {
     allOptions[9],
     allOptions[10],
   ];
+  //#endregion
 
+  //#region Helper Functions
   const updateOptionsVisibility = (newValue, groupOptions) => {
-    // if groupOption is in newValue, toggle its visibility on
     groupOptions.forEach((groupOption) => {
       if (newValue.includes(groupOption)) {
         setWhatIsVisible((prev) => ({
@@ -43,26 +55,35 @@ export const TopBar = ({ whatIsVisible, setWhatIsVisible }) => {
       }
     });
   };
+  //#endregion
 
+  //#region Effects
   useEffect(() => {
     console.log("whatIsVisible", whatIsVisible);
   }, [whatIsVisible]);
+  //#endregion
 
+  //#region Render
   return (
     <>
+      {/* MARK: Header */}
       <div className="w-screen bg-slate-600 inline-flex p-2">
         <h1 className="w-fit"> DumpViewer v0.2</h1>
         <a href="http://ewrdad.github.io">
-          <Badge className={"ml-5"}>Developed by Ewrdad</Badge>
+          <Badge className={"ml-5"}>Developed/Hosted by Ewrdad</Badge>
         </a>
       </div>
+      {/* MARK: Main Content */}
       <div className="w-screen bg-slate-300 p-2 inline-flex ">
+        {/* MARK: App Options */}
         <div className="pr-4">
           App options:
           <ToggleGroup
             type="multiple"
-            defaultValue={[allOptions[0], allOptions[1]]}
+            ref={appGroup}
+            value={appGroupValue}
             onValueChange={(value) => {
+              setAppGroupValue(value);
               updateOptionsVisibility(value, appGroupOptions);
             }}
             variant={"outline"}
@@ -78,11 +99,14 @@ export const TopBar = ({ whatIsVisible, setWhatIsVisible }) => {
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
+        {/* MARK: Data Options */}
         <div className="pr-4">
           Data options:
           <ToggleGroup
             type="multiple"
+            value={dataGroupValue}
             onValueChange={(value) => {
+              setDataGroupValue(value);
               updateOptionsVisibility(value, dataGroupOptions);
             }}
             variant={"outline"}
@@ -101,14 +125,17 @@ export const TopBar = ({ whatIsVisible, setWhatIsVisible }) => {
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
+        {/* MARK: Column Options */}
         <div className="inline-block">
           Column options:
           <ToggleGroup
             type="multiple"
-            variant={"outline"}
+            value={columnGroupValue}
             onValueChange={(value) => {
+              setColumnGroupValue(value);
               updateOptionsVisibility(value, columnGroupOptions);
             }}
+            variant={"outline"}
           >
             <ToggleGroupItem value={columnGroupOptions[0]} className="w-fit">
               General
@@ -124,7 +151,36 @@ export const TopBar = ({ whatIsVisible, setWhatIsVisible }) => {
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
+        {/* MARK: Option Buttons */}
+        <div className="inline-block">
+          Option Options:
+          <div className="flex space-x-2">
+            <button
+              className="w-fit bg-blue-500 text-white px-4 py-2 rounded"
+              onClick={() => {
+                updateOptionsVisibility(allOptions, allOptions);
+                setAppGroupValue(appGroupOptions);
+                setDataGroupValue(dataGroupOptions);
+                setColumnGroupValue(columnGroupOptions);
+              }}
+            >
+              Select All
+            </button>
+            <button
+              className="w-fit bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => {
+                updateOptionsVisibility([], allOptions);
+                setAppGroupValue([]);
+                setDataGroupValue([]);
+                setColumnGroupValue([]);
+              }}
+            >
+              Deselect All
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
+  //#endregion
 };
