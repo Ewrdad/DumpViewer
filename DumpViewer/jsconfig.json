@@ -2,7 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/AppContent/*": ["./src/AppContent/*"]
     },
     "target": "es2020", // Or "es6", "esnext", etc., depending on your project's JS version
     "module": "esnext", // Or "commonjs", "es6", etc.

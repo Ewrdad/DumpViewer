@@ -1,4 +1,13 @@
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import path from "path";
+console.log(
+  "Resolved path:",
+  path.resolve("../../components/ui/toggle-group.jsx")
+);
+
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "../components/ui/toggle-group.jsx";
 import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
 import { Viewer } from "./Viewer/Viewer";
