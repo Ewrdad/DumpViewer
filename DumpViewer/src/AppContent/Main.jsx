@@ -68,6 +68,7 @@ export const Main = () => {
   };
 
   useEffect(() => {
+    document.title = "DumpViewer";
     const localStorageData = window.localStorage.getItem("dumpViewerData");
     if (localStorageData) {
       setData(localStorageData);

@@ -5,16 +5,12 @@
 # Example sections:
 
 ## Project Overview
-- DumpViewer: React-based data viewer with shadcn/ui, Vite, and Vitest setup.
 
 ## Conventions
-- Use jsdoc with @example tags where possible.
-- Always run `npm test` after changes.
-- Use aliases as defined in vite.config.js and jsconfig.json.
 
 ## TODO
-- [ ] Add more tests for edge cases
-- [ ] Document custom components
 
 ## Notes
-- context.ai is readable and writable by both humans and agents.
+ 
+# Troubleshooting
+If you encounter issues running commands due to directory errors (e.g., cd fails), use `pwd` to check the current working directory before proceeding. This helps ensure you are in the correct location, especially if you have previously changed directories.
