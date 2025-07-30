@@ -1,8 +1,7 @@
 // @ts-nocheck
 
-import { Badge } from "@/components/ui/badge";
+import React, { useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import React, { useEffect, useState, useRef } from "react";
 import { allOptions } from "../Options";
 
 /**
@@ -13,174 +12,119 @@ import { allOptions } from "../Options";
  */
 // @ts-ignore
 export const TopBar = ({ whatIsVisible, setWhatIsVisible }) => {
-  //#region State and Refs
-  const [appGroupValue, setAppGroupValue] = useState([
-    allOptions[0],
-    allOptions[1],
-  ]);
-  const [dataGroupValue, setDataGroupValue] = useState([]);
-  const [columnGroupValue, setColumnGroupValue] = useState([]);
-  const appGroup = useRef();
-  //#endregion
-
-  //#region Options Groups
+  // Option groups
   const appGroupOptions = [allOptions[0], allOptions[1], allOptions[2]];
-  const dataGroupOptions = [
-    allOptions[3],
-    allOptions[4],
-    allOptions[5],
-    allOptions[6],
-  ];
-  const columnGroupOptions = [
-    allOptions[7],
-    allOptions[8],
-    allOptions[9],
-    allOptions[10],
-  ];
-  //#endregion
+  const dataGroupOptions = [allOptions[3], allOptions[4], allOptions[5], allOptions[6]];
+  const columnGroupOptions = [allOptions[7], allOptions[8], allOptions[9], allOptions[10]];
 
-  //#region Helper Functions
+  // Local state for toggles
+  const [appGroupValue, setAppGroupValue] = useState(appGroupOptions.filter(opt => whatIsVisible[opt]));
+  const [dataGroupValue, setDataGroupValue] = useState(dataGroupOptions.filter(opt => whatIsVisible[opt]));
+  const [columnGroupValue, setColumnGroupValue] = useState(columnGroupOptions.filter(opt => whatIsVisible[opt]));
+
+  // Helper to update visibility
   const updateOptionsVisibility = (newValue, groupOptions) => {
     groupOptions.forEach((groupOption) => {
-      if (newValue.includes(groupOption)) {
-        setWhatIsVisible((prev) => ({
-          ...prev,
-          [groupOption]: true,
-        }));
-      } else {
-        setWhatIsVisible((prev) => ({
-          ...prev,
-          [groupOption]: false,
-        }));
-      }
+      setWhatIsVisible((prev) => ({
+        ...prev,
+        [groupOption]: newValue.includes(groupOption),
+      }));
     });
   };
-  //#endregion
 
-  //#region Effects
-  useEffect(() => {
-    console.log("whatIsVisible", whatIsVisible);
-  }, [whatIsVisible]);
-  //#endregion
-
-  //#region Render
+  // Minimal sticky header with toggles
   return (
-    <>
-      {/* MARK: Header */}
-      <div className="w-screen bg-slate-600 inline-flex p-2">
-        <h1 className="w-fit"> DumpViewer v0.2</h1>
-        <a href="http://ewrdad.github.io">
-          <Badge className={"ml-5"}>Developed/Hosted by Ewrdad</Badge>
-        </a>
-      </div>
-      {/* MARK: Main Content */}
-      <div className="w-screen bg-slate-300 p-2 inline-flex ">
-        {/* MARK: App Options */}
-        <div className="pr-4">
-          App options:
-          <ToggleGroup
-            type="multiple"
-            ref={appGroup}
-            value={appGroupValue}
-            onValueChange={(value) => {
-              setAppGroupValue(value);
-              updateOptionsVisibility(value, appGroupOptions);
-            }}
-            variant={"outline"}
-          >
-            <ToggleGroupItem value={appGroupOptions[0]} className="w-fit">
-              Tutorial
-            </ToggleGroupItem>
-            <ToggleGroupItem value={appGroupOptions[1]} className="w-fit">
-              Accesibility
-            </ToggleGroupItem>
-            <ToggleGroupItem value={appGroupOptions[2]} className="w-fit">
-              File
-            </ToggleGroupItem>
-          </ToggleGroup>
+    <header className="sticky top-0 z-30 w-full bg-white/90 backdrop-blur border-b border-slate-100 shadow-sm">
+      <div className="flex flex-col px-0 py-1">
+        {/* Row 1: Title and author */}
+        <div className="flex items-center gap-3 h-10">
+          <span className="text-lg font-bold tracking-tight text-slate-800">DumpViewer</span>
+          <span className="text-xs text-slate-500 font-mono bg-slate-100 rounded px-2 py-0.5">v0.2</span>
+          <a href="http://ewrdad.github.io" className="text-xs text-slate-500 hover:text-blue-600 transition-colors ml-2">by Ewrdad</a>
         </div>
-        {/* MARK: Data Options */}
-        <div className="pr-4">
-          Data options:
-          <ToggleGroup
-            type="multiple"
-            value={dataGroupValue}
-            onValueChange={(value) => {
-              setDataGroupValue(value);
-              updateOptionsVisibility(value, dataGroupOptions);
+        {/* Row 2: Controls */}
+        <div className="flex flex-row flex-wrap items-center gap-3 mt-1 pl-0 justify-start">
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded transition-colors"
+            onClick={() => {
+              setAppGroupValue(appGroupOptions);
+              setDataGroupValue(dataGroupOptions);
+              setColumnGroupValue(columnGroupOptions);
+              [...appGroupOptions, ...dataGroupOptions, ...columnGroupOptions].forEach(opt => {
+                setWhatIsVisible(prev => ({ ...prev, [opt]: true }));
+              });
             }}
-            variant={"outline"}
           >
-            <ToggleGroupItem value={dataGroupOptions[0]} className="w-fit">
-              Row
-            </ToggleGroupItem>
-            <ToggleGroupItem value={dataGroupOptions[1]} className="w-fit">
-              Column
-            </ToggleGroupItem>
-            <ToggleGroupItem value={dataGroupOptions[2]} className="w-fit">
-              Exclude
-            </ToggleGroupItem>
-            <ToggleGroupItem value={dataGroupOptions[3]} className="w-fit">
-              Highlight
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </div>
-        {/* MARK: Column Options */}
-        <div className="inline-block">
-          Column options:
-          <ToggleGroup
-            type="multiple"
-            value={columnGroupValue}
-            onValueChange={(value) => {
-              setColumnGroupValue(value);
-              updateOptionsVisibility(value, columnGroupOptions);
+            Select All
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium px-2 py-1 rounded transition-colors"
+            onClick={() => {
+              setAppGroupValue([]);
+              setDataGroupValue([]);
+              setColumnGroupValue([]);
+              [...appGroupOptions, ...dataGroupOptions, ...columnGroupOptions].forEach(opt => {
+                setWhatIsVisible(prev => ({ ...prev, [opt]: false }));
+              });
             }}
-            variant={"outline"}
           >
-            <ToggleGroupItem value={columnGroupOptions[0]} className="w-fit">
-              General
-            </ToggleGroupItem>
-            <ToggleGroupItem value={columnGroupOptions[1]} className="w-fit">
-              Visibility
-            </ToggleGroupItem>
-            <ToggleGroupItem value={columnGroupOptions[2]} className="w-fit">
-              Exclude
-            </ToggleGroupItem>
-            <ToggleGroupItem value={columnGroupOptions[3]} className="w-fit">
-              Highlight
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </div>
-        {/* MARK: Option Buttons */}
-        <div className="inline-block">
-          Option Options:
-          <div className="flex space-x-2">
-            <button
-              className="w-fit bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => {
-                updateOptionsVisibility(allOptions, allOptions);
-                setAppGroupValue(appGroupOptions);
-                setDataGroupValue(dataGroupOptions);
-                setColumnGroupValue(columnGroupOptions);
+            Deselect All
+          </button>
+          {/* App Options */}
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-slate-700 font-semibold min-w-[44px]">App:</span>
+            <ToggleGroup
+              type="multiple"
+              value={appGroupValue}
+              onValueChange={(value) => {
+                setAppGroupValue(value);
+                updateOptionsVisibility(value, appGroupOptions);
               }}
+              variant="outline"
             >
-              Select All
-            </button>
-            <button
-              className="w-fit bg-red-500 text-white px-4 py-2 rounded"
-              onClick={() => {
-                updateOptionsVisibility([], allOptions);
-                setAppGroupValue([]);
-                setDataGroupValue([]);
-                setColumnGroupValue([]);
+              <ToggleGroupItem value={appGroupOptions[0]}>Tutorial</ToggleGroupItem>
+              <ToggleGroupItem value={appGroupOptions[1]}>Accesibility</ToggleGroupItem>
+              <ToggleGroupItem value={appGroupOptions[2]}>File</ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+          {/* Data Options */}
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-slate-700 font-semibold min-w-[44px]">Data:</span>
+            <ToggleGroup
+              type="multiple"
+              value={dataGroupValue}
+              onValueChange={(value) => {
+                setDataGroupValue(value);
+                updateOptionsVisibility(value, dataGroupOptions);
               }}
+              variant="outline"
             >
-              Deselect All
-            </button>
+              <ToggleGroupItem value={dataGroupOptions[0]}>Row</ToggleGroupItem>
+              <ToggleGroupItem value={dataGroupOptions[1]}>Column</ToggleGroupItem>
+              <ToggleGroupItem value={dataGroupOptions[2]}>Exclude</ToggleGroupItem>
+              <ToggleGroupItem value={dataGroupOptions[3]}>Highlight</ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+          {/* Column Options */}
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-slate-700 font-semibold min-w-[44px]">Column:</span>
+            <ToggleGroup
+              type="multiple"
+              value={columnGroupValue}
+              onValueChange={(value) => {
+                setColumnGroupValue(value);
+                updateOptionsVisibility(value, columnGroupOptions);
+              }}
+              variant="outline"
+            >
+              <ToggleGroupItem value={columnGroupOptions[0]}>General</ToggleGroupItem>
+              <ToggleGroupItem value={columnGroupOptions[1]}>Visibility</ToggleGroupItem>
+              <ToggleGroupItem value={columnGroupOptions[2]}>Exclude</ToggleGroupItem>
+              <ToggleGroupItem value={columnGroupOptions[3]}>Highlight</ToggleGroupItem>
+            </ToggleGroup>
           </div>
         </div>
       </div>
-    </>
+    </header>
   );
-  //#endregion
 };
