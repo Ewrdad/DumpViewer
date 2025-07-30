@@ -41,7 +41,7 @@ export const Sidebar = ({ filter, setFilter, whatIsVisible, clearData }) => {
   }
 
   return (
-    <div className="fixed top-0 right-0 h-screen w-64 bg-gray-100 p-4 shadow-lg">
+    <div className="fixed top-0 right-0 h-screen w-64 bg-gray-100 p-4 shadow-lg overflow-y-auto max-h-screen">
       <h2 className="text-lg font-bold mb-4">Sidebar</h2>
       {whatIsVisible.File && (
         <Button

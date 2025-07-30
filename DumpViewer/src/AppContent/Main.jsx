@@ -1,9 +1,3 @@
-import path from "path";
-console.log(
-  "Resolved path:",
-  path.resolve("../../components/ui/toggle-group.jsx")
-);
-
 import {
   ToggleGroup,
   ToggleGroupItem,
