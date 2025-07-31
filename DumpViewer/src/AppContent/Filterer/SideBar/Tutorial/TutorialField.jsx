@@ -1,6 +1,16 @@
 import React from "react";
 
-export const TutorialField = ({ isVisible }) => {
+/**
+ * @param {Object} props
+ * @param {boolean} props.isVisible
+ * @param {Object} props.filter
+ * @param {Function} props.setFilter
+ */
+export const TutorialField = ({
+  isVisible,
+  filter: _filter,
+  setFilter: _setFilter,
+}) => {
   if (!isVisible) return null;
 
   return (

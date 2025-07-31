@@ -1,6 +1,16 @@
 import React from "react";
 
-export const ColumnHighlightField = ({ isVisible }) => {
+/**
+ * @param {Object} props
+ * @param {boolean} props.isVisible
+ * @param {Object} props.filter
+ * @param {Function} props.setFilter
+ */
+export const ColumnHighlightField = ({
+  isVisible,
+  filter: _filter,
+  setFilter: _setFilter,
+}) => {
   if (!isVisible) return null;
 
   return (

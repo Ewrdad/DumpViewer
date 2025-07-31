@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
  * FileField component for file-related sidebar actions.
  * @param {Object} props
  * @param {boolean} props.isVisible - Whether the file section is visible.
- * (Reset Data button is always shown; no clearData prop required)
+ * @param {Object} props.filter
+ * @param {Function} props.setFilter
+ * @param {Function} [props.clearData] - Function to clear the data in the viewer (optional)
  * @returns {React.ReactElement|null}
- * @example <FileField isVisible={true} clearData={() => {}} />
+ * @example <FileField isVisible={true} filter={{}} setFilter={()=>{}} clearData={()=>{}} />
  */
-export const FileField = ({ isVisible }) => {
+export const FileField = ({ isVisible, filter, setFilter, clearData }) => {
   if (!isVisible) return null;
 
   return (
@@ -18,7 +20,7 @@ export const FileField = ({ isVisible }) => {
       <p>This is a dummy field for File.</p>
       <Button
         onMouseDown={() => {
-          /* TODO: implement reset data handler */
+          if (typeof clearData === "function") clearData();
         }}
         className="w-full mt-2"
         variant="destructive"

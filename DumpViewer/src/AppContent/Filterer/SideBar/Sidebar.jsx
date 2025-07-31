@@ -21,11 +21,12 @@ import { GlobalHighlightField } from "./global/globalHighlight/GlobalHighlightFi
  * @param {Filter} props.filter - Used to check current filter settings.
  * @param {Function} props.setFilter - Function to update the filter settings.
  * @param {Object} props.whatIsVisible - Object containing what is visible on the sidebar
+ * @param {Function} [props.clearData] - Function to clear the data in the viewer (optional, for FileField)
 
  *
  * @returns
  */
-export const Sidebar = ({ filter, setFilter, whatIsVisible }) => {
+export const Sidebar = ({ filter, setFilter, whatIsVisible, clearData }) => {
   /**
    * MARK: isWhatIsVisibleAllFalse
    * @description Checks if all properties in whatIsVisible are false, in order to display a empty state message.
@@ -44,7 +45,7 @@ export const Sidebar = ({ filter, setFilter, whatIsVisible }) => {
   const isAnyVisible = (keys) => keys.some((k) => whatIsVisible[k]);
 
   return (
-    <div className="fixed top-0 right-0 h-screen w-64 bg-gray-100 p-4 shadow-lg overflow-y-auto max-h-screen">
+    <div className="fixed top-0 right-0 h-screen w-64 bg-gray-100 p-4 shadow-lg overflow-y-auto max-h-screen z-50">
       <h2 className="text-lg font-bold mb-4">Sidebar</h2>
 
       {/* MARK: App Options */}
@@ -53,9 +54,22 @@ export const Sidebar = ({ filter, setFilter, whatIsVisible }) => {
           <h3 className="font-semibold text-base mb-2 border-b border-gray-200 pb-1">
             App Options
           </h3>
-          <AccesibilityField isVisible={whatIsVisible.Accesibility} />
-          <TutorialField isVisible={whatIsVisible.Tutorial} />
-          <FileField isVisible={whatIsVisible.File} />
+          <AccesibilityField
+            isVisible={whatIsVisible.Accesibility}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <TutorialField
+            isVisible={whatIsVisible.Tutorial}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <FileField
+            isVisible={whatIsVisible.File}
+            filter={filter}
+            setFilter={setFilter}
+            clearData={typeof clearData !== "undefined" ? clearData : undefined}
+          />
         </div>
       )}
 
@@ -70,10 +84,26 @@ export const Sidebar = ({ filter, setFilter, whatIsVisible }) => {
           <h3 className="font-semibold text-base mb-2 border-b border-gray-200 pb-1">
             Data Options
           </h3>
-          <GlobalRowField isVisible={whatIsVisible.globalRow} />
-          <GlobalColumnField isVisible={whatIsVisible.globalColumn} />
-          <GlobalExcludeField isVisible={whatIsVisible.globalExclude} />
-          <GlobalHighlightField isVisible={whatIsVisible.globalHighlight} />
+          <GlobalRowField
+            isVisible={whatIsVisible.globalRow}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <GlobalColumnField
+            isVisible={whatIsVisible.globalColumn}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <GlobalExcludeField
+            isVisible={whatIsVisible.globalExclude}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <GlobalHighlightField
+            isVisible={whatIsVisible.globalHighlight}
+            filter={filter}
+            setFilter={setFilter}
+          />
         </div>
       )}
 
@@ -88,10 +118,26 @@ export const Sidebar = ({ filter, setFilter, whatIsVisible }) => {
           <h3 className="font-semibold text-base mb-2 border-b border-gray-200 pb-1">
             Column Options
           </h3>
-          <ColumnGeneralField isVisible={whatIsVisible.columnGeneral} />
-          <ColumnVisibilityField isVisible={whatIsVisible.columnVisibility} />
-          <ColumnExcludeField isVisible={whatIsVisible.columnExclude} />
-          <ColumnHighlightField isVisible={whatIsVisible.columnHighlight} />
+          <ColumnGeneralField
+            isVisible={whatIsVisible.columnGeneral}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <ColumnVisibilityField
+            isVisible={whatIsVisible.columnVisibility}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <ColumnExcludeField
+            isVisible={whatIsVisible.columnExclude}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <ColumnHighlightField
+            isVisible={whatIsVisible.columnHighlight}
+            filter={filter}
+            setFilter={setFilter}
+          />
         </div>
       )}
     </div>
