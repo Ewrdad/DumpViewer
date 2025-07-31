@@ -88,22 +88,24 @@ export const Main = () => {
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle className="" />
-        {/* Sidebar on the right, overlays main content */}
-        <ResizablePanel
-          defaultSize={25}
-          minSize={15}
-          maxSize={50}
-          className="!min-w-[200px] !max-w-[600px] relative"
-        >
-          <div className="absolute inset-0 h-full w-full z-50 pointer-events-auto">
-            <Sidebar
-              filter={filter}
-              setFilter={setFilter}
-              whatIsVisible={whatIsVisible}
-              clearData={clearData}
-            />
-          </div>
-        </ResizablePanel>
+        {/* Sidebar on the right, overlays main content (only if visible) */}
+        {Object.values(whatIsVisible).some(Boolean) && (
+          <ResizablePanel
+            defaultSize={25}
+            minSize={15}
+            maxSize={50}
+            className="!min-w-[200px] !max-w-[600px] relative"
+          >
+            <div className="absolute inset-0 h-full w-full z-50 pointer-events-auto">
+              <Sidebar
+                filter={filter}
+                setFilter={setFilter}
+                whatIsVisible={whatIsVisible}
+                clearData={clearData}
+              />
+            </div>
+          </ResizablePanel>
+        )}
       </ResizablePanelGroup>
     </div>
   );
