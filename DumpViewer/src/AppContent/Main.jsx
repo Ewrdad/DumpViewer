@@ -1,21 +1,24 @@
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "../components/ui/toggle-group.jsx";
-import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
 import { Viewer } from "./Viewer/Viewer";
-import { Filterer } from "./Filterer/Filterer";
-import { Filter } from "./FilterType";
-/**
- * MARK: Main component
- * @description This is the main component of the application, Mainly in charge of initial page structure and global state.
- */
+import { TopBar } from "./Filterer/TopBar/TopBar";
+import { Sidebar } from "./Filterer/SideBar/Sidebar";
+import { allOptions } from "./Filterer/Options";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
+
 export const Main = () => {
-  /**
-   * @description State object for managing filter settings in the data viewer.
-   * @type {[Filter, Function]} filter - State and setter for filter configuration.
-   */
+  // Accessibility state
+  const [accessibilityOptions, setAccessibilityOptions] = useState({
+    colourOveride: {
+      primary: "#000000",
+      secondary: "#ffffff",
+    },
+    fontSize: 10,
+  });
+  // State for managing filter settings
   const [filter, setFilter] = useState({
     segementedBy: "/n",
     columns: {
@@ -45,22 +48,12 @@ export const Main = () => {
       },
     ],
   });
-
-  /**
-   * Mark: Accessibility state
-   *
-   */
-  const [accessibilityOptions, setAccessibilityOptions] = useState({
-    colourOveride: {
-      primary: "#000000",
-      secondary: "#ffffff",
-    },
-    fontSize: 10,
+  // State for what is visible in the sidebar
+  const [whatIsVisible, setWhatIsVisible] = useState({
+    [allOptions[0]]: true,
+    [allOptions[1]]: true,
   });
-
-  /**
-   * Mark: Data state
-   */
+  // Data state
   const [data, setData] = useState(null);
   const clearData = () => {
     setData(null);
@@ -76,9 +69,42 @@ export const Main = () => {
   }, []);
 
   return (
-    <>
-      <Filterer filter={filter} setFilter={setFilter} clearData={clearData} />
-      <Viewer data={data} setData={setData} />
-    </>
+    <div className="fixed inset-0 h-screen w-screen bg-white">
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="h-full w-full relative"
+      >
+        {/* Main content and TopBar on the left */}
+        <ResizablePanel>
+          <div className="flex flex-col h-full">
+            <TopBar
+              whatIsVisible={whatIsVisible}
+              setWhatIsVisible={setWhatIsVisible}
+            />
+            {/* Viewer below TopBar */}
+            <div className="flex-1 relative">
+              <Viewer data={data} setData={setData} />
+            </div>
+          </div>
+        </ResizablePanel>
+        <ResizableHandle withHandle className="" />
+        {/* Sidebar on the right, overlays main content */}
+        <ResizablePanel
+          defaultSize={25}
+          minSize={15}
+          maxSize={50}
+          className="!min-w-[200px] !max-w-[600px] relative"
+        >
+          <div className="absolute inset-0 h-full w-full z-50 pointer-events-auto">
+            <Sidebar
+              filter={filter}
+              setFilter={setFilter}
+              whatIsVisible={whatIsVisible}
+              clearData={clearData}
+            />
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
   );
 };
